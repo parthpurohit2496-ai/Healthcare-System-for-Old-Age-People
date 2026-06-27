@@ -545,14 +545,14 @@ const OldPersonDashboard = () => {
                 ...tiltStyles.meds,
                 boxShadow: '0 20px 40px rgba(0, 0, 0, 0.04)'
               }}
-              className="group border-glow-wrapper card-3d relative rounded-3xl p-6 bg-white/8 opacity-95 backdrop-blur-md border border-purple-500/16 hover:bg-white/12 mouse-glow-container overflow-hidden"
+              className="group border-glow-wrapper card-3d relative rounded-3xl p-6 bg-white/85 backdrop-blur-md border border-purple-300/45 hover:bg-white/90 mouse-glow-container overflow-hidden premium-card-shadow"
             >
               <div className="border-glow-element" style={{ '--glow-color': '#a855f7' }} />
               <div className="mouse-glow-bg" />
               <div className="animate-shine-sweep" />
 
               <div className="relative z-10 w-full">
-                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest border-b border-purple-100/30 pb-2 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest border-b border-purple-100/35 pb-2 flex items-center gap-2">
                   <img src="/capsule.png" alt="capsule" className="w-5 h-5 object-contain" />
                   <span>Active Medicines</span>
                 </h3>
@@ -561,11 +561,11 @@ const OldPersonDashboard = () => {
                 ) : (
                   <div className="mt-3 space-y-2.5">
                     {patientMeds.map(med => (
-                      <div key={med.id} className="p-3 rounded-2xl bg-white/50 border border-slate-200/50 text-xs text-slate-855 flex flex-col gap-0.5 shadow-sm relative overflow-hidden">
+                      <div key={med.id} className="p-3 rounded-2xl bg-white/95 border border-purple-100/60 text-xs text-slate-855 flex flex-col gap-0.5 shadow-sm relative overflow-hidden">
                         {/* Custom capsule image badge */}
                         <img src="/capsule.png" alt="capsule" className="absolute right-2 top-2 w-5.5 h-5.5 object-contain opacity-70 pointer-events-none" />
-                        <h4 className="font-bold text-slate-900 pr-6">{med.name}</h4>
-                        <p className="text-[10px] text-slate-400 font-bold">Company: {med.company}</p>
+                        <h4 className="font-extrabold text-slate-900 pr-6">{med.name}</h4>
+                        <p className="text-[10px] text-slate-450 font-semibold">Company: {med.company}</p>
                         <p className="text-[10px] text-purple-750 font-black mt-1 uppercase tracking-wider">Schedule: {med.time}</p>
                       </div>
                     ))}
