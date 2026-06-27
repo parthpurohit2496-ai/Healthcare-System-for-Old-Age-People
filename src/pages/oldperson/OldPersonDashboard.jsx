@@ -254,9 +254,11 @@ const OldPersonDashboard = () => {
               ) : (
                 <button 
                   onClick={handleSosTrigger}
-                  className="flex items-center gap-2 px-6 py-3.5 bg-red-950/35 backdrop-blur-md border border-red-500/40 text-red-200 hover:text-white hover:bg-red-900/45 hover:border-red-400/55 font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-[0_12px_24px_rgba(239,68,68,0.18)] transition-all active:scale-[0.97]"
+                  className="flex items-center gap-2 px-7 py-4 bg-gradient-to-r from-red-650 via-red-550 to-rose-600 text-white hover:from-red-600 hover:to-rose-500 font-black text-xs uppercase tracking-widest rounded-2xl shadow-[0_0_20px_rgba(239,68,68,0.35)] hover:shadow-[0_0_30px_rgba(239,68,68,0.55)] hover:scale-105 active:scale-[0.97] transition-all duration-300 relative overflow-hidden group"
                 >
-                  <AlertTriangle size={15} className="text-red-400 animate-pulse" />
+                  {/* Mirror shine sweep reflection */}
+                  <div className="animate-shine-sweep" />
+                  <AlertTriangle size={15} className="text-white fill-white animate-pulse mr-0.5" />
                   <span>EMERGENCY SOS</span>
                 </button>
               )}
