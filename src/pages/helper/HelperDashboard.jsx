@@ -168,6 +168,30 @@ const HelperDashboard = () => {
           <div className="absolute bottom-[20%] right-[15%] w-[400px] h-[400px] rounded-full bg-[#A7C7A3]/10 blur-[100px] animate-light-move" style={{ animationDelay: '-6s' }} />
         </div>
 
+        {/* Real Generated Flower Graphic Layer (Parallax Layer 3: slow counter movement) */}
+        <div 
+          className="absolute right-[-8%] top-[8%] w-[420px] h-[420px] opacity-[0.06] pointer-events-none transition-transform duration-1000 ease-out select-none mix-blend-multiply"
+          style={{
+            transform: `translate(${mousePos.x * -18}px, ${mousePos.y * -12}px) rotate(${mousePos.x * 4}deg)`,
+            backgroundImage: "url('/bg_flower.png')",
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+        
+        {/* Left Side Flower Graphic Layer */}
+        <div 
+          className="absolute left-[-6%] bottom-[12%] w-[340px] h-[340px] opacity-[0.05] pointer-events-none transition-transform duration-1000 ease-out select-none mix-blend-multiply"
+          style={{
+            transform: `translate(${mousePos.x * -12}px, ${mousePos.y * -8}px) rotate(${mousePos.y * -4}deg)`,
+            backgroundImage: "url('/bg_flower.png')",
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+
         {/* Slowly floating botanical leaves (Parallax Layer 2) */}
         <div 
           className="absolute inset-0 z-0 transition-transform duration-1000 ease-out opacity-25"
