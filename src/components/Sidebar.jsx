@@ -137,18 +137,22 @@ const Sidebar = () => {
           <div className="space-y-1">
             <NavLink 
               to="/helper/dashboard" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 px-6 py-3 text-sm font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <LayoutDashboard size={18} className="group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-emerald-600" />
-              <span>Dashboard</span>
+              {/* Mirror shine sweep reflection */}
+              <div className="animate-shine-sweep" />
+              <LayoutDashboard size={18} className="group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-emerald-600 relative z-10" />
+              <span className="relative z-10">Dashboard</span>
             </NavLink>
 
             <NavLink 
               to="/helper/leaves" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 px-6 py-3 text-sm font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <ClipboardList size={18} className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 text-emerald-600" />
-              <span>Leaves & Availability</span>
+              {/* Mirror shine sweep reflection */}
+              <div className="animate-shine-sweep" />
+              <ClipboardList size={18} className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 text-emerald-600 relative z-10" />
+              <span className="relative z-10">Leaves & Availability</span>
             </NavLink>
           </div>
         )}
@@ -170,6 +174,8 @@ const Sidebar = () => {
       <div className="px-6 flex flex-col gap-3">
         {activeUser.role === 'Helper' && (
           <div className="p-3.5 rounded-2xl bg-white/20 border border-emerald-100/20 shadow-sm relative overflow-hidden group">
+            {/* Mirror shine sweep reflection */}
+            <div className="animate-shine-sweep" />
             {/* Eucalyptus leaf background decoration outline */}
             <div className="absolute right-[-10px] bottom-[-10px] opacity-[0.08] text-emerald-800 pointer-events-none group-hover:scale-110 transition-transform duration-500">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
