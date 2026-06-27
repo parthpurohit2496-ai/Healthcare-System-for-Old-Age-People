@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { 
   CheckSquare, Activity, Pill, LogIn, LogOut, Plus, AlertCircle, 
-  Heart, Sun, Clock, Check, Award
+  Heart, Sun, Clock, Check, Award, Flame, Sparkles, Star
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -21,6 +21,9 @@ const HelperDashboard = () => {
   const [customTask, setCustomTask] = useState('');
   const [taskTime, setTaskTime] = useState('09:00 AM');
   
+  // Sparkle trigger on checkbox click
+  const [activeSparkleId, setActiveSparkleId] = useState(null);
+
   // Card hover 3D tilt coordinates
   const [tiltStyles, setTiltStyles] = useState({
     patient: {},
@@ -118,38 +121,61 @@ const HelperDashboard = () => {
     setTaskTime('09:00 AM');
   };
 
+  const handleTaskToggleClick = (taskId, isCurrentlyCompleted) => {
+    toggleTask(taskId);
+    if (!isCurrentlyCompleted) {
+      setActiveSparkleId(taskId);
+      setTimeout(() => setActiveSparkleId(null), 1000);
+    }
+  };
+
+  // Generate 12 premium static background gold sparkles
+  const bgSparkles = Array.from({ length: 12 }, (_, i) => ({
+    id: i,
+    left: `${(i * 9) + 4}%`,
+    top: `${(i % 2 === 0 ? 18 : 72) + (i % 3) * 4}%`,
+    delay: `${-(i * 2.2)}s`,
+    duration: `${14 + (i % 3) * 4}s`,
+    size: `${(i % 3) * 2 + 3}px`
+  }));
+
   return (
     <div className="relative min-h-[85vh] text-slate-800 pb-12 select-none">
       
-      {/* ================= STATIC CALMING SAGE BACKGROUND ================= */}
+      {/* ================= GORGEOUS ZEN NATURE BACKGROUND IMAGE LAYER ================= */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-3xl">
-        {/* Solid contrasting calming Sage green background to make cards float */}
-        <div className="absolute inset-0 bg-[#DEE5DF] z-0" />
-        
-        {/* Soft static white-glow accent behind cards */}
-        <div className="absolute top-[20%] left-[10%] w-[600px] h-[600px] rounded-full bg-white/20 blur-[120px]" />
-        
-        {/* Static Flower illustration in background for elegant look */}
+        {/* Real Generated Beautiful Zen Nature Landscape Background */}
         <div 
-          className="absolute right-[-6%] top-[8%] w-[420px] h-[420px] opacity-[0.06] pointer-events-none select-none mix-blend-multiply"
-          style={{
-            backgroundImage: "url('/bg_flower.png')",
-            backgroundSize: 'contain',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }}
+          className="absolute inset-0 bg-cover bg-center opacity-[0.25] z-0" 
+          style={{ backgroundImage: "url('/bg_nature.png')" }} 
         />
-        <div 
-          className="absolute left-[-5%] bottom-[12%] w-[340px] h-[340px] opacity-[0.05] pointer-events-none select-none mix-blend-multiply"
-          style={{
-            backgroundImage: "url('/bg_flower.png')",
-            backgroundSize: 'contain',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }}
-        />
+        
+        {/* Soft white-mint glaze overlay to maintain high text contrast & legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F5]/85 via-[#FCFDFD]/65 to-[#F3F8F4]/80 z-0" />
+        
+        {/* Sage/Mint glowing blobs */}
+        <div className="absolute top-[10%] left-[20%] w-[450px] h-[450px] rounded-full bg-[#DDF7E3]/35 blur-[85px]" />
+        <div className="absolute bottom-[20%] right-[15%] w-[450px] h-[450px] rounded-full bg-[#A7C7A3]/10 blur-[105px]" />
 
-        {/* Static vector wave outline at the bottom (opacity increased slightly) */}
+        {/* Floating golden wellness sparkles (Slow motion) */}
+        {bgSparkles.map(sp => (
+          <div 
+            key={sp.id}
+            className="bg-particle text-yellow-500/25 font-bold"
+            style={{
+              left: sp.left,
+              top: sp.top,
+              fontSize: sp.size,
+              '--delay': sp.delay,
+              '--duration': sp.duration,
+              '--max-opacity': 0.4
+            }}
+          >
+            ✦
+          </div>
+        ))}
+
+        {/* Static vector wave outline at the bottom */}
         <div className="absolute bottom-0 inset-x-0 h-[220px] opacity-[0.06] text-emerald-800">
           <svg className="w-full h-full" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path fill="currentColor" d="M0,160 L48,154.7 C96,149 192,139 288,144 C384,149 480,171 576,176 C672,181 768,171 864,154.7 C960,139 1056,117 1152,112 C1248,107 1344,117 1392,122.7 L1440,128 L1440,250 L1392,250 C1344,250 1248,250 1152,250 C1056,250 960,250 864,250 C768,250 672,250 576,250 C480,250 384,250 288,250 C192,250 96,250 48,250 L0,250 Z" />
@@ -167,7 +193,7 @@ const HelperDashboard = () => {
           transition={{ duration: 0.8 }}
           className="relative overflow-hidden rounded-3xl bg-white/80 backdrop-blur-md border border-emerald-100/40 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-[0_15px_30px_rgba(0,0,0,0.03)]"
         >
-          {/* Subtle Lotus line decoration */}
+          {/* Subtle Lotus decoration */}
           <div className="absolute right-[-40px] top-[-30px] opacity-[0.04] text-emerald-800 pointer-events-none rotate-12">
             <svg width="180" height="180" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12,2C12,2 6,8 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8 12,2 12,2Z" />
@@ -190,6 +216,20 @@ const HelperDashboard = () => {
           {/* Widgets and Check-In panel */}
           <div className="flex flex-wrap items-center gap-4">
             
+            {/* Exciting Caregiver Streak & Care Index Widgets */}
+            <div className="flex items-center gap-2">
+              {/* Shift Streak */}
+              <div className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-orange-50 text-orange-700 font-extrabold text-[10px] uppercase border border-orange-100 shadow-sm animate-pulse">
+                <Flame size={12} className="fill-orange-500" />
+                <span>🔥 5 Days Streak</span>
+              </div>
+              {/* Care Score Index */}
+              <div className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 font-extrabold text-[10px] uppercase border border-emerald-100 shadow-sm">
+                <Star size={12} className="fill-emerald-500 text-emerald-600" />
+                <span>🌟 Care Index: 9.8</span>
+              </div>
+            </div>
+
             {/* Clock Widget */}
             <div className="flex items-center gap-3 px-3 py-2 rounded-2xl bg-white/50 border border-slate-100 text-xs font-semibold text-slate-650 shadow-sm">
               <div className="flex items-center gap-1 text-emerald-600">
@@ -258,15 +298,19 @@ const HelperDashboard = () => {
               <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'patient')}
                 onMouseLeave={() => handleCardMouseLeave('patient')}
-                style={tiltStyles.patient}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm premium-card-shadow hover:bg-white/85 mouse-glow-container overflow-hidden"
+                style={{
+                  ...tiltStyles.patient,
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                }}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
 
                 <div className="relative z-10 flex items-center justify-between border-b border-emerald-100/30 pb-4 mb-4">
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Assigned Patient</h3>
-                  <Heart className="text-emerald-500 fill-emerald-500" size={14} />
+                  {/* Glowing pulsing heartbeat vector */}
+                  <Heart className="text-emerald-550 fill-emerald-500 animate-pulse" size={14} />
                 </div>
 
                 <div className="relative z-10 flex items-center gap-4">
@@ -318,8 +362,11 @@ const HelperDashboard = () => {
               <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'vitals')}
                 onMouseLeave={() => handleCardMouseLeave('vitals')}
-                style={tiltStyles.vitals}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm premium-card-shadow hover:bg-white/85 mouse-glow-container overflow-hidden"
+                style={{
+                  ...tiltStyles.vitals,
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                }}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -330,7 +377,7 @@ const HelperDashboard = () => {
                 </div>
 
                 {vitalsMsg && (
-                  <div className="relative z-10 mb-4 p-3 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-800 shadow-sm animate-scale">
+                  <div className="relative z-10 mb-4 p-3 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-800 shadow-sm">
                     <Check size={14} className="bg-emerald-600 text-white rounded-full p-0.5" />
                     <span>{vitalsMsg}</span>
                   </div>
@@ -398,7 +445,7 @@ const HelperDashboard = () => {
                   <button 
                     type="submit"
                     disabled={!isCheckedIn || isCheckedOut}
-                    className="w-full mt-2 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-extrabold text-xs rounded-2xl shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
+                    className="w-full mt-2 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-extrabold text-xs rounded-2xl shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {!isCheckedIn ? 'Check-In to Save Vitals' : 'Save Health Vitals'}
                   </button>
@@ -412,8 +459,11 @@ const HelperDashboard = () => {
               <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'checklist')}
                 onMouseLeave={() => handleCardMouseLeave('checklist')}
-                style={tiltStyles.checklist}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm premium-card-shadow hover:bg-white/85 mouse-glow-container overflow-hidden flex flex-col justify-between min-h-[460px]"
+                style={{
+                  ...tiltStyles.checklist,
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                }}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden flex flex-col justify-between min-h-[460px]"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -429,24 +479,39 @@ const HelperDashboard = () => {
                     </span>
                   </div>
 
-                  <div className="w-full h-1.5 bg-slate-100 rounded-full mb-5 overflow-hidden">
+                  <div className="w-full h-1.5 bg-slate-100 rounded-full mb-4 overflow-hidden">
                     <div 
                       className="h-full bg-emerald-600 rounded-full transition-all duration-500 ease-out" 
                       style={{ width: `${completionPercentage}%` }} 
                     />
                   </div>
 
+                  {/* Exciting Complete Celebration Banner */}
+                  {completionPercentage === 100 && totalTasksCount > 0 && (
+                    <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-center gap-1.5 text-[10px] font-black text-emerald-800 animate-pulse mb-3.5 shadow-sm">
+                      <Sparkles size={13} className="text-yellow-500 fill-yellow-400" />
+                      <span>ALL SHIFT DUTIES COMPLETED!</span>
+                    </div>
+                  )}
+
                   {patientTasks.length === 0 ? (
                     <p className="text-xs text-slate-400 py-10 text-center font-medium">No shift tasks configured for today.</p>
                   ) : (
-                    <div className="space-y-3 max-h-[220px] overflow-y-auto pr-1 no-scrollbar">
+                    <div className="space-y-3 max-h-[200px] overflow-y-auto pr-1 no-scrollbar">
                       {patientTasks.map(task => (
                         <div key={task.id} className="relative flex items-start gap-3 p-3 rounded-2xl bg-white/50 border border-slate-200/50 hover:bg-emerald-50/20 hover:border-emerald-100/20 transition-all duration-300">
+                          {/* Sparkle pop up indicator */}
+                          {activeSparkleId === task.id && (
+                            <div className="absolute left-2 top-2 z-20 text-yellow-500 pointer-events-none">
+                              <Sparkles size={14} className="fill-yellow-400 animate-pulse" />
+                            </div>
+                          )}
+                          
                           <input 
                             type="checkbox" 
                             checked={task.completed}
                             disabled={!isCheckedIn || isCheckedOut}
-                            onChange={() => toggleTask(task.id)}
+                            onChange={() => handleTaskToggleClick(task.id, task.completed)}
                             className="mt-0.5 w-4 h-4 rounded-full border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                           />
                           <div className="leading-tight">
@@ -498,8 +563,11 @@ const HelperDashboard = () => {
               <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'medicine')}
                 onMouseLeave={() => handleCardMouseLeave('medicine')}
-                style={tiltStyles.medicine}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm premium-card-shadow hover:bg-white/85 mouse-glow-container overflow-hidden min-h-[460px]"
+                style={{
+                  ...tiltStyles.medicine,
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                }}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden min-h-[460px]"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -524,7 +592,8 @@ const HelperDashboard = () => {
 
                       return (
                         <div key={med.id} className="relative pl-5 group/item">
-                          <div className="absolute left-[3px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white shadow-sm z-10" />
+                          {/* Pulsing indicator dot */}
+                          <div className="absolute left-[3px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white shadow-sm z-10 animate-pulse" />
                           
                           {idx < patientMedicines.length - 1 && (
                             <div className="absolute left-[7px] top-1/2 bottom-[-28px] w-[1px] border-l border-dashed border-emerald-250/50" />
@@ -552,7 +621,7 @@ const HelperDashboard = () => {
         )}
 
         {/* ================= BOTTOM MOTIVATION WELLNESS CARD ================= */}
-        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-white/90 via-white/50 to-emerald-50/30 backdrop-blur-md border border-emerald-100/40 p-8 md:p-12 text-center shadow-[0_20px_45px_rgba(0,0,0,0.04)] max-w-5xl mx-auto flex flex-col items-center justify-center">
+        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-white/90 via-white/50 to-emerald-50/30 backdrop-blur-md border border-emerald-100/40 p-8 md:p-12 text-center shadow-[0_20px_45px_rgba(0,0,0,0.04)] max-w-5xl mx-auto flex flex-col items-center justify-center group">
           {/* Eucalyptus Branch Left */}
           <div className="absolute left-[-20px] bottom-[-20px] opacity-[0.06] text-emerald-800 rotate-45 pointer-events-none select-none">
             <svg width="220" height="220" viewBox="0 0 24 24" fill="currentColor">
@@ -561,6 +630,10 @@ const HelperDashboard = () => {
           </div>
 
           <div className="relative w-28 h-20 mb-4 flex items-center justify-center text-emerald-600/25 pointer-events-none">
+            {/* Golden Sparkles floating */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Sparkles size={48} className="text-yellow-400/40 animate-pulse absolute" />
+            </div>
             <svg width="84" height="84" viewBox="0 0 24 24" fill="currentColor" className="relative z-10">
               <path d="M12,2C12,2 6,8 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8 12,2 12,2Z" />
             </svg>
