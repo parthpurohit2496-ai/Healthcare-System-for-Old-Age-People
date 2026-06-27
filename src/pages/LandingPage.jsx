@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { ShieldCheck, Heart, HelpingHand, ArrowRight } from 'lucide-react';
@@ -8,7 +8,10 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const { activeUser } = useContext(AppContext);
 
-  React.useEffect(() => {
+  // Parallax state based on mouse coordinates
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
     if (activeUser) {
       if (activeUser.role === 'Admin') navigate('/admin/dashboard');
       if (activeUser.role === 'Helper') navigate('/helper/dashboard');
@@ -16,8 +19,22 @@ const LandingPage = () => {
     }
   }, [activeUser, navigate]);
 
-  // Handle mouse position inside cards for radial reflection light
-  const handleMouseMove = (e) => {
+  // Global mouse move listener for parallax background
+  useEffect(() => {
+    const handleGlobalMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      // Map coordinates to [-1, 1] range
+      const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+      const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+      setMousePos({ x, y });
+    };
+
+    window.addEventListener('mousemove', handleGlobalMouseMove);
+    return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
+  }, []);
+
+  // Card mouse-follow glow properties handler
+  const handleCardMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -25,72 +42,113 @@ const LandingPage = () => {
     e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
   };
 
-  // Generate 15 static floating background particles
-  const bgParticles = Array.from({ length: 15 }, (_, i) => ({
-    id: i,
-    left: `${(i * 7) + 5}%`,
-    delay: `${-(i * 1.5)}s`,
-    duration: `${15 + (i % 3) * 5}s`,
-    size: `${(i % 3) + 2}px`
-  }));
+  // Generate 25 premium floating medical particles (+ signs and tiny stars)
+  const particles = Array.from({ length: 25 }, (_, i) => {
+    const isPlus = i % 3 === 0;
+    return {
+      id: i,
+      char: isPlus ? '+' : '•',
+      size: isPlus ? '14px' : '4px',
+      color: isPlus ? 'text-teal-500/20' : 'text-purple-400/35',
+      left: `${(i * 4) + 2}%`,
+      delay: `${-(i * 1.8)}s`,
+      duration: `${18 + (i % 4) * 4}s`,
+      maxOpacity: isPlus ? 0.15 : 0.45
+    };
+  });
 
   return (
     <div className="min-h-screen bg-[#0b1220] flex flex-col justify-between text-slate-100 relative overflow-hidden select-none">
       
-      {/* 1. Animated Particle Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {bgParticles.map(p => (
+      {/* ================= BACKGROUND LAYERS (PARALLAX & GLOWS) ================= */}
+      
+      {/* 1. Deep Mesh Gradient Blobs (Parallax Layer 1: Moves with Mouse) */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none transition-transform duration-700 ease-out"
+        style={{
+          transform: `translate(${mousePos.x * 25}px, ${mousePos.y * 20}px)`
+        }}
+      >
+        {/* Soft Purple Blob */}
+        <div className="absolute top-[10%] left-[5%] w-[500px] h-[500px] rounded-full bg-purple-900/10 blur-[130px] animate-light-move" />
+        {/* Soft Teal Blob */}
+        <div className="absolute bottom-[10%] right-[5%] w-[550px] h-[550px] rounded-full bg-teal-950/15 blur-[140px] animate-light-move" style={{ animationDelay: '-8s' }} />
+        {/* Center Blue Glow Spot */}
+        <div className="absolute top-[35%] left-[30%] w-[350px] h-[350px] rounded-full bg-blue-900/5 blur-[100px] animate-light-move" style={{ animationDelay: '-15s' }} />
+      </div>
+
+      {/* 2. Soft Animated Light Beams (Parallax Layer 1) */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none transition-transform duration-700 ease-out opacity-40"
+        style={{
+          transform: `translate(${mousePos.x * 15}px, ${mousePos.y * 10}px)`
+        }}
+      >
+        <div className="absolute top-[-10%] left-[25%] w-[80px] h-[120%] bg-gradient-to-b from-purple-500/5 via-transparent to-transparent transform rotate-[-20deg] blur-lg animate-beam-glow" />
+        <div className="absolute top-[-10%] right-[30%] w-[120px] h-[120%] bg-gradient-to-b from-teal-500/5 via-transparent to-transparent transform rotate-[-20deg] blur-lg animate-beam-glow" style={{ animationDelay: '-5s' }} />
+      </div>
+
+      {/* 3. Floating Medical Particles & Tiny Stars (Parallax Layer 2: Faster Movement) */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none transition-transform duration-1000 ease-out"
+        style={{
+          transform: `translate(${mousePos.x * 35}px, ${mousePos.y * 30}px)`
+        }}
+      >
+        {particles.map(p => (
           <div 
             key={p.id}
-            className="bg-particle"
+            className={`bg-particle font-bold select-none ${p.color}`}
             style={{
               left: p.left,
-              width: p.size,
-              height: p.size,
+              fontSize: p.size,
               '--delay': p.delay,
-              '--duration': p.duration
+              '--duration': p.duration,
+              '--max-opacity': p.maxOpacity
             }}
-          />
+          >
+            {p.char}
+          </div>
         ))}
       </div>
 
-      {/* 2. Background Neon Glow Spots (Slow Moving) */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[20%] left-[15%] w-[450px] h-[450px] rounded-full bg-purple-900/10 blur-[110px] animate-light-move" />
-        <div className="absolute bottom-[20%] right-[15%] w-[450px] h-[450px] rounded-full bg-teal-900/10 blur-[110px] animate-light-move" style={{ animationDelay: '-7s' }} />
-      </div>
-
-      {/* 3. Smooth Animated Vector Waves (behind the hero section) */}
-      <div className="absolute inset-x-0 top-[10%] h-[55%] z-0 pointer-events-none overflow-hidden opacity-[0.25]">
-        <svg className="absolute w-full h-full" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      {/* 4. Smooth Animated SVG Wave Mesh (Parallax Layer 3: Counter Movement) */}
+      <div 
+        className="absolute inset-x-0 bottom-0 h-[48%] z-0 pointer-events-none overflow-hidden opacity-[0.25] transition-transform duration-700 ease-out select-none"
+        style={{
+          transform: `translate(${mousePos.x * -15}px, ${mousePos.y * -8}px)`
+        }}
+      >
+        <svg className="absolute w-full h-full bottom-0 left-0" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <path 
-            fill="none"
-            stroke="url(#grid-gradient-1)"
-            strokeWidth="1.5"
-            d="M0,192 Q360,110 720,240 T1440,160"
+            fill="url(#wave-gradient-1)" 
+            d="M0,192L48,197.3C96,203,192,213,288,192C384,171,480,117,576,128C672,139,768,213,864,229.3C960,245,1056,203,1152,176C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
             className="animate-wave-slow"
-          />
+          ></path>
           <path 
-            fill="none"
-            stroke="url(#grid-gradient-2)"
-            strokeWidth="1"
-            d="M0,120 Q360,260 720,130 T1440,210"
+            fill="url(#wave-gradient-2)" 
+            d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,224C672,213,768,171,864,144C960,117,1056,107,1152,122.7C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
             className="animate-wave-medium"
-          />
+          ></path>
           <defs>
-            <linearGradient id="grid-gradient-1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#a855f7" stopOpacity="0.3" />
-              <stop offset="50%" stopColor="#ec4899" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#14b8a6" stopOpacity="0.3" />
+            <linearGradient id="wave-gradient-1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#c084fc" stopOpacity="0.85" />
+              <stop offset="50%" stopColor="#f472b6" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#2dd4bf" stopOpacity="0.85" />
             </linearGradient>
-            <linearGradient id="grid-gradient-2" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#14b8a6" stopOpacity="0.3" />
-              <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#a855f7" stopOpacity="0.3" />
+            <linearGradient id="wave-gradient-2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#2dd4bf" stopOpacity="0.75" />
+              <stop offset="50%" stopColor="#60a5fa" stopOpacity="0.75" />
+              <stop offset="100%" stopColor="#c084fc" stopOpacity="0.75" />
             </linearGradient>
           </defs>
         </svg>
       </div>
+
+      {/* Grid Mesh lines back overlay */}
+      <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
+
+      {/* ========================================================================= */}
 
       {/* Navigation Header */}
       <header className="px-8 py-5 flex items-center justify-between border-b border-white/5 backdrop-blur-md bg-slate-950/10 z-10">
@@ -105,8 +163,9 @@ const LandingPage = () => {
 
       {/* Main Content Area */}
       <main className="max-w-6xl mx-auto px-6 py-16 flex flex-col items-center justify-center flex-1 text-center z-10 relative">
-        {/* Soft Radial Glow behind Heading */}
-        <div className="absolute w-[600px] h-[350px] rounded-full bg-gradient-to-tr from-purple-500/5 to-cyan-500/5 blur-[100px] pointer-events-none z-0 top-[20%] left-1/2 -translate-x-1/2" />
+        
+        {/* 5. Soft Radial Glow behind Main Heading */}
+        <div className="absolute w-[580px] h-[340px] rounded-full bg-gradient-to-tr from-purple-500/5 to-cyan-500/5 blur-[100px] pointer-events-none z-0 top-[20%] left-1/2 -translate-x-1/2" />
 
         {/* Hero Title */}
         <motion.h1 
@@ -142,7 +201,7 @@ const LandingPage = () => {
           {/* Admin Card */}
           <div 
             onClick={() => navigate('/admin/login')}
-            onMouseMove={handleMouseMove}
+            onMouseMove={handleCardMouseMove}
             style={{ '--glow-color': '#a855f7' }}
             className="group cursor-pointer border-glow-wrapper relative rounded-2xl p-8 glass-card-premium hover:bg-slate-950/30 flex flex-col items-center hover:-translate-y-2 overflow-hidden mouse-glow-container shadow-[0_15px_30px_-20px_rgba(168,85,247,0.1)] hover:shadow-[0_25px_45px_-10px_rgba(168,85,247,0.25)]"
           >
@@ -177,7 +236,7 @@ const LandingPage = () => {
             
             {/* Animated Hover Arrow */}
             <div className="mt-auto flex items-center gap-1 text-purple-400 text-xs font-bold opacity-45 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300 z-10">
-              <span>Access Access</span>
+              <span>Access Portal</span>
               <ArrowRight size={14} />
             </div>
           </div>
@@ -185,7 +244,7 @@ const LandingPage = () => {
           {/* Helper Card */}
           <div 
             onClick={() => navigate('/helper/login')}
-            onMouseMove={handleMouseMove}
+            onMouseMove={handleCardMouseMove}
             style={{ '--glow-color': '#14b8a6' }}
             className="group cursor-pointer border-glow-wrapper relative rounded-2xl p-8 glass-card-premium hover:bg-slate-950/30 flex flex-col items-center hover:-translate-y-2 overflow-hidden mouse-glow-container shadow-[0_15px_30px_-20px_rgba(20,184,166,0.1)] hover:shadow-[0_25px_45px_-10px_rgba(20,184,166,0.25)]"
           >
@@ -220,7 +279,7 @@ const LandingPage = () => {
             
             {/* Animated Hover Arrow */}
             <div className="mt-auto flex items-center gap-1 text-teal-400 text-xs font-bold opacity-45 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300 z-10">
-              <span>Access Access</span>
+              <span>Access Portal</span>
               <ArrowRight size={14} />
             </div>
           </div>
@@ -228,7 +287,7 @@ const LandingPage = () => {
           {/* Elder Card */}
           <div 
             onClick={() => navigate('/old-person/login')}
-            onMouseMove={handleMouseMove}
+            onMouseMove={handleCardMouseMove}
             style={{ '--glow-color': '#ec4899' }}
             className="group cursor-pointer border-glow-wrapper relative rounded-2xl p-8 glass-card-premium hover:bg-slate-950/30 flex flex-col items-center hover:-translate-y-2 overflow-hidden mouse-glow-container shadow-[0_15px_30px_-20px_rgba(236,72,153,0.1)] hover:shadow-[0_25px_45px_-10px_rgba(236,72,153,0.25)]"
           >
@@ -263,7 +322,7 @@ const LandingPage = () => {
             
             {/* Animated Hover Arrow */}
             <div className="mt-auto flex items-center gap-1 text-pink-400 text-xs font-bold opacity-45 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300 z-10">
-              <span>Access Access</span>
+              <span>Access Portal</span>
               <ArrowRight size={14} />
             </div>
           </div>

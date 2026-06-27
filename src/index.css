@@ -48,25 +48,23 @@
 /* Floating Particles (Landing Background) */
 @keyframes floatParticle {
   0% {
-    transform: translateY(100vh) translateX(0) scale(1);
+    transform: translateY(105vh) translateX(0) rotate(0deg);
     opacity: 0;
   }
   10% {
-    opacity: 0.4;
+    opacity: var(--max-opacity, 0.4);
   }
   90% {
-    opacity: 0.4;
+    opacity: var(--max-opacity, 0.4);
   }
   100% {
-    transform: translateY(-20vh) translateX(50px) scale(1);
+    transform: translateY(-10vh) translateX(60px) rotate(360deg);
     opacity: 0;
   }
 }
 
 .bg-particle {
   position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
   pointer-events: none;
   animation: floatParticle var(--duration) ease-in-out var(--delay) infinite;
 }
@@ -171,19 +169,28 @@
     transform: translate(0, 0) scale(1);
   }
   50% {
-    transform: translate(10vw, 5vh) scale(1.1);
+    transform: translate(6vw, 4vh) scale(1.08);
   }
 }
 
 .animate-light-move {
-  animation: lightMove 20s ease-in-out infinite;
+  animation: lightMove 25s ease-in-out infinite;
 }
 
-/* Custom premium color glow boxes */
-.glow-box {
-  filter: blur(60px);
-  pointer-events: none;
-  opacity: 0.12;
+/* Animated Light Beams */
+@keyframes beamGlow {
+  0%, 100% {
+    opacity: 0.01;
+    transform: skewX(-15deg) translateX(-10px);
+  }
+  50% {
+    opacity: 0.06;
+    transform: skewX(-15deg) translateX(10px);
+  }
+}
+
+.animate-beam-glow {
+  animation: beamGlow 12s ease-in-out infinite;
 }
 
 /* Pulse animation for SOS alert button */
