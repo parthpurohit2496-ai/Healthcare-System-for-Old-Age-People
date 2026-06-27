@@ -171,25 +171,25 @@ const Sidebar = () => {
       </div>
 
       {/* Sidebar bottom decoration/quote card */}
-      <div className="px-6 flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         {activeUser.role === 'Helper' && (
-          <div className="p-3.5 rounded-2xl bg-white/20 border border-emerald-100/20 shadow-sm relative overflow-hidden group">
+          <div className="p-5 mx-3 rounded-[24px] bg-[#DDF7E3]/35 backdrop-blur-md border border-emerald-500/15 shadow-sm relative overflow-hidden group">
             {/* Mirror shine sweep reflection */}
             <div className="animate-shine-sweep" />
             {/* Eucalyptus leaf background decoration outline */}
-            <div className="absolute right-[-10px] bottom-[-10px] opacity-[0.08] text-emerald-800 pointer-events-none group-hover:scale-110 transition-transform duration-500">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+            <div className="absolute right-[-8px] bottom-[-8px] opacity-[0.12] text-emerald-800 pointer-events-none group-hover:scale-110 transition-transform duration-500">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17,8C8,10 5.9,16.17 3.82,21.34L2.18,20.66C4.26,15.49 6.34,9 15.67,7C12.5,5 9,5 5,7L4,5C9,3 13,3 17,5C20,3.7 22.3,4.3 22.3,4.3C22.3,4.3 21.7,7 17,8Z" />
               </svg>
             </div>
-            <p className="text-[10px] text-emerald-800/60 font-bold uppercase tracking-wider mb-1">Weekly Focus</p>
-            <p className="text-[11px] text-emerald-800 leading-relaxed font-semibold italic">
+            <p className="text-[11px] text-emerald-800/60 font-black uppercase tracking-widest mb-1.5">Weekly Focus</p>
+            <p className="text-xs text-emerald-800 leading-relaxed font-extrabold italic">
               "Your caring patience makes a healing difference every single day."
             </p>
           </div>
         )}
 
-        <div className="pt-3 border-t border-slate-200/30 flex flex-col gap-1 text-[11px] text-slate-500">
+        <div className="px-6 pt-3 border-t border-slate-200/30 flex flex-col gap-1 text-[11px] text-slate-500">
           <p className="font-bold flex items-center gap-1 text-slate-700">
             <Heart size={12} className="text-emerald-600 fill-emerald-550 animate-pulse" />
             <span>Health Care</span>
