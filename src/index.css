@@ -125,3 +125,31 @@
   animation: blinkLogo 0.8s infinite ease-in-out;
 }
 
+/* Wave Floating Animations */
+@keyframes waveSlow {
+  0%, 100% {
+    transform: translateX(0) translateY(0) scaleY(1);
+  }
+  55% {
+    transform: translateX(-3%) translateY(8px) scaleY(1.03);
+  }
+}
+@keyframes waveMedium {
+  0%, 100% {
+    transform: translateX(0) translateY(0) scaleY(1);
+  }
+  55% {
+    transform: translateX(3%) translateY(-10px) scaleY(0.97);
+  }
+}
+
+.animate-wave-slow {
+  animation: waveSlow 15s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+.animate-wave-medium {
+  animation: waveMedium 10s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+

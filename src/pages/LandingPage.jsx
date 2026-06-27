@@ -24,6 +24,34 @@ const LandingPage = () => {
       {/* Background waves/grid pattern mock with CSS */}
       <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
+      {/* Floating SVG waves in the background */}
+      <div className="absolute inset-x-0 bottom-0 h-[45%] z-0 pointer-events-none overflow-hidden opacity-[0.07] select-none">
+        <svg className="absolute w-full h-full bottom-0 left-0" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path 
+            fill="url(#wave-gradient-1)" 
+            d="M0,192L48,197.3C96,203,192,213,288,192C384,171,480,117,576,128C672,139,768,213,864,229.3C960,245,1056,203,1152,176C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            className="animate-wave-slow"
+          ></path>
+          <path 
+            fill="url(#wave-gradient-2)" 
+            d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,224C672,213,768,171,864,144C960,117,1056,107,1152,122.7C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            className="animate-wave-medium"
+          ></path>
+          <defs>
+            <linearGradient id="wave-gradient-1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#a855f7" />
+              <stop offset="50%" stopColor="#ec4899" />
+              <stop offset="100%" stopColor="#14b8a6" />
+            </linearGradient>
+            <linearGradient id="wave-gradient-2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#14b8a6" />
+              <stop offset="50%" stopColor="#3b82f6" />
+              <stop offset="100%" stopColor="#a855f7" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
       {/* Header */}
       <header className="px-8 py-6 flex items-center justify-between border-b border-slate-900 backdrop-blur-md bg-slate-950/20 z-10">
         <div className="flex items-center gap-2">
