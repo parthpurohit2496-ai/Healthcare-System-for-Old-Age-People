@@ -543,30 +543,30 @@ const OldPersonDashboard = () => {
               onMouseLeave={() => handleCardMouseLeave('meds')}
               style={{
                 ...tiltStyles.meds,
-                boxShadow: '0 25px 50px rgba(124, 58, 237, 0.15)'
+                boxShadow: '0 20px 40px rgba(124, 58, 237, 0.06)'
               }}
-              className="group border-glow-wrapper card-3d relative rounded-3xl p-6 bg-gradient-to-br from-[#7C3AED] via-[#6D28D9] to-[#4F46E5] border border-purple-400/30 hover:shadow-[0_30px_60px_rgba(124,58,237,0.25)] mouse-glow-container overflow-hidden premium-card-shadow"
+              className="group border-glow-wrapper card-3d relative rounded-3xl p-6 bg-purple-500/15 backdrop-blur-md border border-purple-400/25 hover:bg-purple-500/22 mouse-glow-container overflow-hidden premium-card-shadow"
             >
-              <div className="border-glow-element" style={{ '--glow-color': '#fcd34d' }} />
+              <div className="border-glow-element" style={{ '--glow-color': '#a855f7' }} />
               <div className="mouse-glow-bg" />
               <div className="animate-shine-sweep" />
 
               <div className="relative z-10 w-full">
-                <h3 className="text-sm font-black text-white uppercase tracking-widest border-b border-white/20 pb-3.5 flex items-center gap-2">
-                  <img src="/capsule.png" alt="capsule" className="w-5 h-5 object-contain brightness-0 invert" />
+                <h3 className="text-sm font-black text-purple-900 uppercase tracking-widest border-b border-purple-100/30 pb-3 flex items-center gap-2">
+                  <img src="/capsule.png" alt="capsule" className="w-5 h-5 object-contain" />
                   <span>Active Medicines</span>
                 </h3>
                 {patientMeds.length === 0 ? (
-                  <p className="text-xs text-purple-200 py-6 text-center font-medium">No medicine schedule configured.</p>
+                  <p className="text-xs text-purple-750 py-6 text-center font-medium">No medicine schedule configured.</p>
                 ) : (
                   <div className="mt-4 space-y-3">
                     {patientMeds.map(med => (
-                      <div key={med.id} className="p-3.5 rounded-2xl bg-white/12 backdrop-blur-md border border-white/20 text-xs text-white shadow-md relative overflow-hidden group/item">
+                      <div key={med.id} className="p-3.5 rounded-2xl bg-white/35 backdrop-blur-md border border-purple-100/30 text-xs text-purple-900 shadow-sm relative overflow-hidden group/item">
                         {/* Custom capsule image badge */}
-                        <img src="/capsule.png" alt="capsule" className="absolute right-2 top-2.5 w-6 h-6 object-contain opacity-90 brightness-0 invert pointer-events-none group-hover/item:scale-110 transition-transform duration-300" />
-                        <h4 className="font-extrabold text-base text-white pr-8 tracking-tight">{med.name}</h4>
-                        <p className="text-[10px] text-purple-200 font-semibold mt-0.5">Company: {med.company}</p>
-                        <div className="mt-2.5 w-fit px-3 py-1 rounded-full bg-yellow-400/20 border border-yellow-300/40 text-[10px] text-yellow-350 font-black uppercase tracking-wider">
+                        <img src="/capsule.png" alt="capsule" className="absolute right-2 top-2.5 w-6 h-6 object-contain opacity-80 pointer-events-none group-hover/item:scale-110 transition-transform duration-300" />
+                        <h4 className="font-extrabold text-base text-purple-950 pr-8 tracking-tight">{med.name}</h4>
+                        <p className="text-[10px] text-purple-800/80 font-bold mt-0.5">Company: {med.company}</p>
+                        <div className="mt-2.5 w-fit px-3 py-1 rounded-full bg-purple-100 text-purple-800 border border-purple-200/50 text-[10px] text-purple-900 font-black uppercase tracking-wider">
                           Schedule: {med.time}
                         </div>
                       </div>
