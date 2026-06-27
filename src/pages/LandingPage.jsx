@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
-import { ShieldCheck, Heart, HelpingHand, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Heart, HelpingHand, ArrowRight, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const LandingPage = () => {
@@ -59,8 +59,8 @@ const LandingPage = () => {
     const dx = (x - xc) / xc;
     const dy = (y - yc) / yc;
 
-    const tiltX = -dy * 8;
-    const tiltY = dx * 8;
+    const tiltX = -dy * 6;
+    const tiltY = dx * 6;
 
     setTiltStyles(prev => ({
       ...prev,
@@ -104,117 +104,69 @@ const LandingPage = () => {
     }, 450);
   };
 
-  // Generate 25 premium floating background particles
-  const particles = Array.from({ length: 25 }, (_, i) => {
-    const isPlus = i % 3 === 0;
-    return {
-      id: i,
-      char: isPlus ? '+' : '•',
-      size: isPlus ? '14px' : '4px',
-      color: isPlus ? 'text-teal-500/20' : 'text-purple-400/35',
-      left: `${(i * 4) + 2}%`,
-      delay: `${-(i * 1.8)}s`,
-      duration: `${18 + (i % 4) * 4}s`,
-      maxOpacity: isPlus ? 0.15 : 0.45
-    };
-  });
+  // Generate 25 premium floating background gold sparkles (Matches Helper Dashboard)
+  const sparkles = Array.from({ length: 25 }, (_, i) => ({
+    id: i,
+    left: `${(i * 4) + 1}%`,
+    delay: `${-(i * 1.5)}s`,
+    duration: `${15 + (i % 4) * 4}s`,
+    size: `${(i % 3) * 2.5 + 4}px`
+  }));
 
   return (
-    <div className="min-h-screen bg-[#0b1220] flex flex-col justify-between text-slate-100 relative overflow-hidden select-none">
+    <div className="min-h-screen flex flex-col justify-between text-slate-800 relative overflow-hidden select-none">
       
-      {/* ================= BACKGROUND LAYERS (AURORA, PARALLAX, & BEAMS) ================= */}
-      
-      {/* 1. Aurora Animated Flowing Background Layers (Parallax Layer 1) */}
+      {/* ================= BACKGROUND IMAGE & OVERLAYS ================= */}
+      {/* Real Generated Beautiful Zen Nature Landscape Background */}
       <div 
-        className="absolute inset-0 z-0 pointer-events-none transition-transform duration-700 ease-out opacity-25"
+        className="absolute inset-0 bg-cover bg-center opacity-[0.9] z-0" 
+        style={{ backgroundImage: "url('/bg_nature.png')" }} 
+      />
+      
+      {/* Soft white-mint glaze overlay to ensure high contrast & legibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F5]/75 via-[#FCFDFD]/60 to-[#F3F8F4]/70 z-0" />
+      
+      {/* 2. Floating Golden Sparkles */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none transition-transform duration-1000 ease-out"
         style={{
           transform: `translate(${mousePos.x * 20}px, ${mousePos.y * 15}px)`
         }}
       >
-        {/* Aurora 1: Purple/Pink */}
-        <div className="absolute top-[10%] left-[-5%] w-[65vw] h-[65vw] bg-gradient-to-tr from-purple-600/10 via-pink-500/10 to-transparent blur-[130px] animate-aurora-1" />
-        {/* Aurora 2: Teal/Blue */}
-        <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[60vw] bg-gradient-to-bl from-teal-500/10 via-blue-500/10 to-transparent blur-[140px] animate-aurora-2" style={{ animationDelay: '-6s' }} />
-      </div>
-
-      {/* 2. Soft Animated Light Beams */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none transition-transform duration-700 ease-out opacity-45"
-        style={{
-          transform: `translate(${mousePos.x * 12}px, ${mousePos.y * 8}px)`
-        }}
-      >
-        <div className="absolute top-[-10%] left-[25%] w-[80px] h-[120%] bg-gradient-to-b from-purple-500/5 via-transparent to-transparent transform rotate-[-20deg] blur-lg animate-beam-glow" />
-        <div className="absolute top-[-10%] right-[30%] w-[120%] h-[120%] bg-gradient-to-b from-teal-500/5 via-transparent to-transparent transform rotate-[-20deg] blur-lg animate-beam-glow" style={{ animationDelay: '-5s' }} />
-      </div>
-
-      {/* 3. Floating Medical Particles & Stars */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none transition-transform duration-1000 ease-out"
-        style={{
-          transform: `translate(${mousePos.x * 30}px, ${mousePos.y * 25}px)`
-        }}
-      >
-        {particles.map(p => (
+        {sparkles.map(sp => (
           <div 
-            key={p.id}
-            className={`bg-particle font-bold select-none ${p.color}`}
+            key={sp.id}
+            className="bg-particle text-yellow-500/35 font-bold"
             style={{
-              left: p.left,
-              fontSize: p.size,
-              '--delay': p.delay,
-              '--duration': p.duration,
-              '--max-opacity': p.maxOpacity
+              left: sp.left,
+              fontSize: sp.size,
+              '--delay': sp.delay,
+              '--duration': sp.duration,
+              '--max-opacity': 0.45
             }}
           >
-            {p.char}
+            ✦
           </div>
         ))}
       </div>
 
-      {/* 4. Animated SVG Wave Mesh (Counter Parallax) */}
-      <div 
-        className="absolute inset-x-0 bottom-0 h-[48%] z-0 pointer-events-none overflow-hidden opacity-[0.22] transition-transform duration-700 ease-out select-none"
-        style={{
-          transform: `translate(${mousePos.x * -12}px, ${mousePos.y * -6}px)`
-        }}
-      >
-        <svg className="absolute w-full h-full bottom-0 left-0" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path 
-            fill="url(#wave-gradient-1)" 
-            d="M0,192L48,197.3C96,203,192,213,288,192C384,171,480,117,576,128C672,139,768,213,864,229.3C960,245,1056,203,1152,176C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-            className="animate-wave-slow"
-          ></path>
-          <path 
-            fill="url(#wave-gradient-2)" 
-            d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,224C672,213,768,171,864,144C960,117,1056,107,1152,122.7C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-            className="animate-wave-medium"
-          ></path>
-          <defs>
-            <linearGradient id="wave-gradient-1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#c084fc" stopOpacity="0.85" />
-              <stop offset="50%" stopColor="#f472b6" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#2dd4bf" stopOpacity="0.85" />
-            </linearGradient>
-            <linearGradient id="wave-gradient-2" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#2dd4bf" stopOpacity="0.75" />
-              <stop offset="50%" stopColor="#60a5fa" stopOpacity="0.75" />
-              <stop offset="100%" stopColor="#c084fc" stopOpacity="0.75" />
-            </linearGradient>
-          </defs>
+      {/* 3. Static Vector Wave Outline at the bottom */}
+      <div className="absolute bottom-0 inset-x-0 h-[220px] opacity-[0.06] text-emerald-800 pointer-events-none z-0">
+        <svg className="w-full h-full" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" d="M0,160 L48,154.7 C96,149 192,139 288,144 C384,149 480,171 576,176 C672,181 768,171 864,154.7 C960,139 1056,117 1152,112 C1248,107 1344,117 1392,122.7 L1440,128 L1440,250 L1392,250 C1344,250 1248,250 1152,250 C1056,250 960,250 864,250 C768,250 672,250 576,250 C480,250 384,250 288,250 C192,250 96,250 48,250 L0,250 Z" />
         </svg>
       </div>
 
       {/* Grid Mesh Lines */}
-      <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
+      <div className="absolute inset-0 opacity-[0.02] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
 
       {/* ========================================================================= */}
 
       {/* Navigation Header */}
-      <header className="px-8 py-5 flex items-center justify-between border-b border-white/5 backdrop-blur-md bg-slate-950/10 z-10">
+      <header className="px-8 py-5 flex items-center justify-between border-b border-emerald-100/30 backdrop-blur-md bg-white/20 z-10">
         <div className="flex items-center gap-2">
-          <Heart className="text-pink-500 fill-pink-500 animate-pulse" size={18} />
-          <span className="font-extrabold text-sm tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-500">
+          <Heart className="text-emerald-600 fill-emerald-500 animate-pulse" size={18} />
+          <span className="font-extrabold text-sm tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-emerald-800 to-teal-700">
             HEALTH CARE NETWORK
           </span>
         </div>
@@ -225,17 +177,17 @@ const LandingPage = () => {
       <main className="max-w-6xl mx-auto px-6 py-16 flex flex-col items-center justify-center flex-1 text-center z-10 relative">
         
         {/* Soft Radial Glow behind Main Heading */}
-        <div className="absolute w-[580px] h-[340px] rounded-full bg-gradient-to-tr from-purple-500/5 to-cyan-500/5 blur-[100px] pointer-events-none z-0 top-[20%] left-1/2 -translate-x-1/2" />
+        <div className="absolute w-[580px] h-[340px] rounded-full bg-gradient-to-tr from-emerald-500/5 to-yellow-500/5 blur-[100px] pointer-events-none z-0 top-[20%] left-1/2 -translate-x-1/2" />
 
-        {/* Hero Title (SaaS Metallic Gradient) */}
+        {/* Hero Title (Premium Light Nature Text Gradient) */}
         <motion.h1 
           initial={{ opacity: 0, y: 35 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 leading-tight relative z-10"
         >
-          <span className="text-premium-metallic">Empowering Care,</span> <br />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-cyan-400">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-950 via-emerald-800 to-slate-900">Empowering Care,</span> <br />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
             Nurturing Elder Lives
           </span>
         </motion.h1>
@@ -245,7 +197,7 @@ const LandingPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          className="text-slate-400 text-sm md:text-base max-w-xl mb-14 leading-relaxed font-medium relative z-10"
+          className="text-slate-600 text-sm md:text-base max-w-xl mb-14 leading-relaxed font-semibold relative z-10"
         >
           A centralized, real-time collaboration network connecting Administrators, dedicated Care Helpers, and Elders for seamless medical tracking and urgent assistance.
         </motion.p>
@@ -258,17 +210,20 @@ const LandingPage = () => {
           className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl px-4 relative z-10"
         >
           
-          {/* Admin Card (Blue Accent) */}
+          {/* Admin Card (Blue Glass Theme) */}
           <div 
             onClick={(e) => handleCardClick(e, 'admin', '/admin/login')}
             onMouseMove={(e) => handleCardMouseMove(e, 'admin')}
             onMouseLeave={() => handleCardMouseLeave('admin')}
             style={{ 
-              '--glow-color': '#3b82f6',
+              '--glow-color': 'rgba(59, 130, 246, 0.3)',
               ...tiltStyles.admin 
             }}
-            className="group cursor-pointer border-glow-wrapper card-3d relative rounded-2xl p-8 glass-card-premium hover:bg-slate-950/30 flex flex-col items-center overflow-hidden mouse-glow-container shadow-[0_15px_30px_-20px_rgba(59,130,246,0.1)] hover:shadow-[0_25px_45px_-10px_rgba(59,130,246,0.3)] transition-shadow duration-300"
+            className="group cursor-pointer border-glow-wrapper card-3d relative rounded-3xl p-8 bg-white/10 backdrop-blur-md border border-blue-500/20 flex flex-col items-center overflow-hidden mouse-glow-container shadow-[0_15px_35px_rgba(0,0,0,0.03)] hover:bg-white/20 transition-all duration-500"
           >
+            {/* Mirror shine sweep reflection */}
+            <div className="animate-shine-sweep" />
+
             {/* Click Ripple Wave */}
             {ripples.admin && (
               <span 
@@ -284,53 +239,49 @@ const LandingPage = () => {
             <div className="mouse-glow-bg" />
 
             {/* Floating particles inside the card */}
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.15]">
-              <div className="bg-particle text-blue-500/20 font-bold" style={{ left: '15%', top: '25%', '--duration': '7s', '--delay': '0s' }}>•</div>
-              <div className="bg-particle text-blue-400/25 font-bold" style={{ left: '80%', top: '45%', '--duration': '9s', '--delay': '-2.5s' }}>•</div>
-              <div className="bg-particle text-blue-500/20 font-bold" style={{ left: '35%', top: '75%', '--duration': '8s', '--delay': '-5s' }}>•</div>
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.08]">
+              <div className="bg-particle text-blue-500 font-bold" style={{ left: '15%', top: '25%', '--duration': '7s', '--delay': '0s' }}>•</div>
+              <div className="bg-particle text-blue-400 font-bold" style={{ left: '80%', top: '45%', '--duration': '9s', '--delay': '-2.5s' }}>•</div>
             </div>
-
-            {/* Internal scanline line glow */}
-            <div className="animate-line-glow text-blue-500 top-1/3" />
-
-            {/* Glowing bottom accent line */}
-            <div className="absolute bottom-0 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-20 group-hover:opacity-100 transition-opacity blur-[1px] z-10" />
 
             {/* Icon & Orbit Ring */}
             <div className="relative w-24 h-24 flex items-center justify-center mb-6">
               {/* Planetary Orbit Ring */}
               <div className="absolute w-[120%] h-[30%] transform rotate-[-25deg] pointer-events-none">
-                <div className="w-full h-full border-2 border-blue-500/20 rounded-full shadow-[0_0_12px_rgba(59,130,246,0.2)] group-hover:border-blue-500/50 transition-all duration-500 animate-orbit-spin" />
+                <div className="w-full h-full border-2 border-blue-500/25 rounded-full group-hover:border-blue-500/50 transition-all duration-500" />
               </div>
-              {/* Core Icon with float pulse */}
-              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-blue-950 to-blue-800 border-2 border-blue-500/30 flex items-center justify-center text-blue-400 group-hover:text-white transition-all duration-500 relative z-10 premium-glow-blue animate-float-pulse logo-blink-hover">
+              {/* Core Icon */}
+              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-blue-50 to-blue-100 border border-blue-200 flex items-center justify-center text-blue-600 group-hover:text-blue-700 transition-all duration-500 relative z-10 shadow-sm">
                 <ShieldCheck size={24} />
               </div>
             </div>
 
-            <h3 className="font-extrabold text-lg mb-2 text-slate-100 group-hover:text-blue-400 transition-colors z-10">Admin Portal</h3>
-            <p className="text-slate-400 text-xs leading-relaxed max-w-[240px] mb-8 font-medium z-10">
+            <h3 className="font-extrabold text-lg mb-2 text-slate-800 group-hover:text-blue-700 transition-colors z-10">Admin Portal</h3>
+            <p className="text-slate-500 text-xs leading-relaxed max-w-[240px] mb-8 font-semibold z-10">
               Manage helpers, register elder patients, configure medicine schedules, and review audit logs.
             </p>
             
             {/* Animated Hover Arrow */}
-            <div className="mt-auto flex items-center gap-1.5 text-blue-400 text-xs font-bold z-10">
+            <div className="mt-auto flex items-center gap-1.5 text-blue-600 text-xs font-black z-10">
               <span>Access Portal</span>
               <ArrowRight size={14} className="transform translate-x-[-6px] opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out" />
             </div>
           </div>
 
-          {/* Helper Card (Emerald Green Accent) */}
+          {/* Helper Card (Emerald Glass Theme) */}
           <div 
             onClick={(e) => handleCardClick(e, 'helper', '/helper/login')}
             onMouseMove={(e) => handleCardMouseMove(e, 'helper')}
             onMouseLeave={() => handleCardMouseLeave('helper')}
             style={{ 
-              '--glow-color': '#10b981',
+              '--glow-color': 'rgba(16, 185, 129, 0.3)',
               ...tiltStyles.helper 
             }}
-            className="group cursor-pointer border-glow-wrapper card-3d relative rounded-2xl p-8 glass-card-premium hover:bg-slate-950/30 flex flex-col items-center overflow-hidden mouse-glow-container shadow-[0_15px_30px_-20px_rgba(16,185,129,0.1)] hover:shadow-[0_25px_45px_-10px_rgba(16,185,129,0.3)] transition-shadow duration-300"
+            className="group cursor-pointer border-glow-wrapper card-3d relative rounded-3xl p-8 bg-white/10 backdrop-blur-md border border-emerald-500/20 flex flex-col items-center overflow-hidden mouse-glow-container shadow-[0_15px_35px_rgba(0,0,0,0.03)] hover:bg-white/20 transition-all duration-500"
           >
+            {/* Mirror shine sweep reflection */}
+            <div className="animate-shine-sweep" />
+
             {/* Click Ripple Wave */}
             {ripples.helper && (
               <span 
@@ -346,53 +297,49 @@ const LandingPage = () => {
             <div className="mouse-glow-bg" />
 
             {/* Floating particles inside the card */}
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.15]">
-              <div className="bg-particle text-emerald-500/20 font-bold" style={{ left: '15%', top: '25%', '--duration': '7s', '--delay': '0s' }}>•</div>
-              <div className="bg-particle text-emerald-400/25 font-bold" style={{ left: '80%', top: '45%', '--duration': '9s', '--delay': '-2.5s' }}>•</div>
-              <div className="bg-particle text-emerald-500/20 font-bold" style={{ left: '35%', top: '75%', '--duration': '8s', '--delay': '-5s' }}>•</div>
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.08]">
+              <div className="bg-particle text-emerald-500 font-bold" style={{ left: '15%', top: '25%', '--duration': '7s', '--delay': '0s' }}>•</div>
+              <div className="bg-particle text-emerald-400 font-bold" style={{ left: '80%', top: '45%', '--duration': '9s', '--delay': '-2.5s' }}>•</div>
             </div>
-
-            {/* Internal scanline line glow */}
-            <div className="animate-line-glow text-emerald-500 top-1/2" />
-
-            {/* Glowing bottom accent line */}
-            <div className="absolute bottom-0 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-20 group-hover:opacity-100 transition-opacity blur-[1px] z-10" />
 
             {/* Icon & Orbit Ring */}
             <div className="relative w-24 h-24 flex items-center justify-center mb-6">
               {/* Planetary Orbit Ring */}
               <div className="absolute w-[120%] h-[30%] transform rotate-[-25deg] pointer-events-none">
-                <div className="w-full h-full border-2 border-emerald-500/20 rounded-full shadow-[0_0_12px_rgba(16,185,129,0.2)] group-hover:border-emerald-500/50 transition-all duration-500 animate-orbit-spin" />
+                <div className="w-full h-full border-2 border-emerald-500/25 rounded-full group-hover:border-emerald-500/50 transition-all duration-500" />
               </div>
-              {/* Core Icon with float pulse */}
-              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-emerald-950 to-emerald-800 border-2 border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:text-white transition-all duration-500 relative z-10 premium-glow-emerald animate-float-pulse logo-blink-hover">
+              {/* Core Icon */}
+              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-emerald-50 to-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-600 group-hover:text-emerald-700 transition-all duration-500 relative z-10 shadow-sm">
                 <HelpingHand size={24} />
               </div>
             </div>
 
-            <h3 className="font-extrabold text-lg mb-2 text-slate-100 group-hover:text-emerald-400 transition-colors z-10">Helper Portal</h3>
-            <p className="text-slate-400 text-xs leading-relaxed max-w-[240px] mb-8 font-medium z-10">
+            <h3 className="font-extrabold text-lg mb-2 text-slate-800 group-hover:text-emerald-700 transition-colors z-10">Helper Portal</h3>
+            <p className="text-slate-500 text-xs leading-relaxed max-w-[240px] mb-8 font-semibold z-10">
               Check-in for shifts, track daily checklists, log elder vitals (BP, sugar), and manage leave availability.
             </p>
             
             {/* Animated Hover Arrow */}
-            <div className="mt-auto flex items-center gap-1.5 text-emerald-400 text-xs font-bold z-10">
+            <div className="mt-auto flex items-center gap-1.5 text-emerald-600 text-xs font-black z-10">
               <span>Access Portal</span>
               <ArrowRight size={14} className="transform translate-x-[-6px] opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out" />
             </div>
           </div>
 
-          {/* Elder Card (Purple Accent) */}
+          {/* Elder Card (Purple Glass Theme) */}
           <div 
             onClick={(e) => handleCardClick(e, 'elder', '/old-person/login')}
             onMouseMove={(e) => handleCardMouseMove(e, 'elder')}
             onMouseLeave={() => handleCardMouseLeave('elder')}
             style={{ 
-              '--glow-color': '#a855f7',
+              '--glow-color': 'rgba(168, 85, 247, 0.3)',
               ...tiltStyles.elder 
             }}
-            className="group cursor-pointer border-glow-wrapper card-3d relative rounded-2xl p-8 glass-card-premium hover:bg-slate-950/30 flex flex-col items-center overflow-hidden mouse-glow-container shadow-[0_15px_30px_-20px_rgba(168,85,247,0.1)] hover:shadow-[0_25px_45px_-10px_rgba(168,85,247,0.3)] transition-shadow duration-300"
+            className="group cursor-pointer border-glow-wrapper card-3d relative rounded-3xl p-8 bg-white/10 backdrop-blur-md border border-purple-500/20 flex flex-col items-center overflow-hidden mouse-glow-container shadow-[0_15px_35px_rgba(0,0,0,0.03)] hover:bg-white/20 transition-all duration-500"
           >
+            {/* Mirror shine sweep reflection */}
+            <div className="animate-shine-sweep" />
+
             {/* Click Ripple Wave */}
             {ripples.elder && (
               <span 
@@ -408,50 +355,43 @@ const LandingPage = () => {
             <div className="mouse-glow-bg" />
 
             {/* Floating particles inside the card */}
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.15]">
-              <div className="bg-particle text-purple-500/20 font-bold" style={{ left: '15%', top: '25%', '--duration': '7s', '--delay': '0s' }}>•</div>
-              <div className="bg-particle text-purple-400/25 font-bold" style={{ left: '80%', top: '45%', '--duration': '9s', '--delay': '-2.5s' }}>•</div>
-              <div className="bg-particle text-purple-500/20 font-bold" style={{ left: '35%', top: '75%', '--duration': '8s', '--delay': '-5s' }}>•</div>
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.08]">
+              <div className="bg-particle text-purple-500 font-bold" style={{ left: '15%', top: '25%', '--duration': '7s', '--delay': '0s' }}>•</div>
+              <div className="bg-particle text-purple-400 font-bold" style={{ left: '80%', top: '45%', '--duration': '9s', '--delay': '-2.5s' }}>•</div>
             </div>
-
-            {/* Internal scanline line glow */}
-            <div className="animate-line-glow text-purple-500 top-2/3" />
-
-            {/* Glowing bottom accent line */}
-            <div className="absolute bottom-0 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-20 group-hover:opacity-100 transition-opacity blur-[1px] z-10" />
 
             {/* Icon & Orbit Ring */}
             <div className="relative w-24 h-24 flex items-center justify-center mb-6">
               {/* Planetary Orbit Ring */}
               <div className="absolute w-[120%] h-[30%] transform rotate-[-25deg] pointer-events-none">
-                <div className="w-full h-full border-2 border-purple-500/20 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.2)] group-hover:border-purple-500/50 transition-all duration-500 animate-orbit-spin" />
+                <div className="w-full h-full border-2 border-purple-500/25 rounded-full group-hover:border-purple-500/50 transition-all duration-500" />
               </div>
-              {/* Core Icon with float pulse */}
-              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-purple-950 to-purple-800 border-2 border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:text-white transition-all duration-500 relative z-10 premium-glow-purple animate-float-pulse logo-blink-hover">
+              {/* Core Icon */}
+              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-purple-50 to-purple-100 border border-purple-200 flex items-center justify-center text-purple-600 group-hover:text-purple-700 transition-all duration-500 relative z-10 shadow-sm">
                 <Heart size={24} />
               </div>
             </div>
 
-            <h3 className="font-extrabold text-lg mb-2 text-slate-100 group-hover:text-purple-450 transition-colors z-10">Elder Portal</h3>
-            <p className="text-slate-400 text-xs leading-relaxed max-w-[240px] mb-8 font-medium z-10">
+            <h3 className="font-extrabold text-lg mb-2 text-slate-800 group-hover:text-purple-700 transition-colors z-10">Elder Portal</h3>
+            <p className="text-slate-500 text-xs leading-relaxed max-w-[240px] mb-8 font-semibold z-10">
               View health charts, schedule appointments, chat with assigned helpers, and access emergency SOS services.
             </p>
             
             {/* Animated Hover Arrow */}
-            <div className="mt-auto flex items-center gap-1.5 text-purple-400 text-xs font-bold z-10">
+            <div className="mt-auto flex items-center gap-1.5 text-purple-600 text-xs font-black z-10">
               <span>Access Portal</span>
               <ArrowRight size={14} className="transform translate-x-[-6px] opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out" />
             </div>
           </div>
 
-      </motion.div>
-    </main>
+        </motion.div>
+      </main>
 
-    {/* Footer Section */}
-    <footer className="py-8 border-t border-white/5 text-center text-xs text-slate-500 z-10 bg-slate-950/20">
-      &copy; {new Date().getFullYear()} Health Care Network. All rights reserved. Designed for elder support and care excellence.
-    </footer>
-  </div>
+      {/* Footer Section */}
+      <footer className="py-8 border-t border-emerald-100/20 text-center text-xs text-slate-550 z-10 bg-white/10">
+        &copy; {new Date().getFullYear()} Health Care Network. All rights reserved. Designed for elder support and care excellence.
+      </footer>
+    </div>
   );
 };
 
