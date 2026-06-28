@@ -142,6 +142,32 @@ const Sidebar = () => {
               <Settings size={16} className="group-hover:scale-110 transition-transform duration-300 text-blue-600 relative z-10" />
               <span className="relative z-10">Settings & Roles</span>
             </NavLink>
+
+            {/* ================= BEAUTIFUL BOTANICAL ARTWORK IN EMPTY SPACE ================= */}
+            <div className="hidden md:flex flex-col items-center justify-center py-6 px-4 mt-6 opacity-90 transition-opacity duration-300">
+              <svg viewBox="50 10 100 110" className="w-56 h-36 animate-float-gentle text-blue-600/18 hover:text-blue-500/30 transition-colors duration-500 pointer-events-none select-none">
+                {/* Ensō Zen Circle */}
+                <path d="M65,65 C65,42 85,25 110,25 C132,25 145,43 140,68 C135,93 110,105 85,98 C72,94 65,85 65,75" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.45" />
+
+                {/* Minimalist Mountains inside the Circle */}
+                <path d="M75,90 L95,55 L115,78 L130,62 L140,90 Z" fill="#2563eb" opacity="0.18" />
+                <path d="M85,90 L105,65 L120,90 Z" fill="#1d4ed8" opacity="0.25" />
+                
+                {/* Glowing blue sun core (Flickering energy flame) */}
+                <circle cx="115" cy="45" r="7" fill="#60a5fa" opacity="0.65" className="animate-flicker-flame-1" />
+                <circle cx="115" cy="45" r="11" fill="#93c5fd" opacity="0.25" className="animate-flicker-flame-2" />
+
+                {/* Emitting gold/blue sparkles (rising and fading) */}
+                <circle cx="115" cy="40" r="1.5" fill="#fbbf24" className="animate-emit-sparkle-1" />
+                <circle cx="108" cy="48" r="1.8" fill="#60a5fa" className="animate-emit-sparkle-2" style={{ animationDelay: '0.8s' }} />
+                <circle cx="122" cy="45" r="1.2" fill="#3b82f6" className="animate-emit-sparkle-3" style={{ animationDelay: '1.6s' }} />
+                <circle cx="98" cy="58" r="1.5" fill="#fbbf24" className="animate-emit-sparkle-1" style={{ animationDelay: '2.4s' }} />
+                <circle cx="132" cy="62" r="1.6" fill="#60a5fa" className="animate-emit-sparkle-2" style={{ animationDelay: '1.2s' }} />
+              </svg>
+              <span className="text-[10px] text-blue-800/40 font-black tracking-[0.2em] uppercase mt-2 select-none">
+                Zen Clarity
+              </span>
+            </div>
           </div>
         )}
 
