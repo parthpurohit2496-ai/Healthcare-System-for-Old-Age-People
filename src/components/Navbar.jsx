@@ -1,11 +1,32 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
-import { LogOut, User, Bell, HeartPulse } from 'lucide-react';
+import { LogOut, User, Bell, HeartPulse, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const { activeUser, logoutUser, sosAlerts } = useContext(AppContext);
   const navigate = useNavigate();
+
+  // Live clock state
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formattedDate = time.toLocaleDateString('en-US', { 
+    weekday: 'short', 
+    month: 'short', 
+    day: 'numeric' 
+  });
+  
+  const formattedTime = time.toLocaleTimeString('en-US', { 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit',
+    hour12: true 
+  });
 
   const handleLogout = () => {
     logoutUser();
@@ -45,6 +66,26 @@ const Navbar = () => {
         <span className="font-black text-xl tracking-tight text-slate-800">Health Care</span>
         <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-slate-850/10 text-slate-650 uppercase font-black tracking-wider">v2.0</span>
       </div>
+
+      {/* ================= CENTRAL CLOCK & PORTAL STATUS REMINDERS ================= */}
+      {activeUser && (
+        <div className="hidden md:flex items-center gap-3 bg-slate-900/5 backdrop-blur-md px-4 py-2 rounded-2xl border border-slate-350/10 text-[11px] font-black text-slate-650 shadow-[inset_0_1px_2px_rgba(0,0,0,0.015)]">
+          <Clock size={13} className="text-slate-500" />
+          <span>{formattedDate}</span>
+          <span className="text-slate-300/60 font-medium">•</span>
+          <span className="tabular-nums text-slate-800">{formattedTime}</span>
+          <span className="text-slate-300/60 font-medium">•</span>
+          {activeUser.role === 'Admin' && (
+            <span className="text-[9px] text-blue-650 uppercase tracking-widest font-black">🌿 Wisdom Console</span>
+          )}
+          {activeUser.role === 'Helper' && (
+            <span className="text-[9px] text-emerald-650 uppercase tracking-widest font-black">🌿 Zen Care active</span>
+          )}
+          {activeUser.role === 'Old Person' && (
+            <span className="text-[9px] text-purple-650 uppercase tracking-widest font-black">🌿 Quiet Peace active</span>
+          )}
+        </div>
+      )}
 
       {activeUser ? (
         <div className="flex items-center gap-6">
