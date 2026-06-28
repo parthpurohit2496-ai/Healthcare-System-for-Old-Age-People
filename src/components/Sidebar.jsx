@@ -134,27 +134,55 @@ const Sidebar = () => {
         )}
 
         {activeUser.role === 'Helper' && (
-          <div className="space-y-2">
-            <NavLink 
-              to="/helper/dashboard" 
-              className={({ isActive }) => `relative overflow-hidden flex items-center gap-4 mx-3 px-5 py-3.5 rounded-2xl text-base font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
-            >
-              {/* Mirror shine sweep reflection */}
-              <div className="animate-shine-sweep" />
-              <LayoutDashboard size={20} className="group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-emerald-600 relative z-10" />
-              <span className="relative z-10">Dashboard</span>
-            </NavLink>
+          <>
+            <div className="space-y-2">
+              <NavLink 
+                to="/helper/dashboard" 
+                className={({ isActive }) => `relative overflow-hidden flex items-center gap-4 mx-3 px-5 py-3.5 rounded-2xl text-base font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
+              >
+                {/* Mirror shine sweep reflection */}
+                <div className="animate-shine-sweep" />
+                <LayoutDashboard size={20} className="group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-emerald-600 relative z-10" />
+                <span className="relative z-10">Dashboard</span>
+              </NavLink>
 
-            <NavLink 
-              to="/helper/leaves" 
-              className={({ isActive }) => `relative overflow-hidden flex items-center gap-4 mx-3 px-5 py-3.5 rounded-2xl text-base font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
-            >
-              {/* Mirror shine sweep reflection */}
-              <div className="animate-shine-sweep" />
-              <ClipboardList size={20} className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 text-emerald-600 relative z-10" />
-              <span className="relative z-10">Leaves & Availability</span>
-            </NavLink>
-          </div>
+              <NavLink 
+                to="/helper/leaves" 
+                className={({ isActive }) => `relative overflow-hidden flex items-center gap-4 mx-3 px-5 py-3.5 rounded-2xl text-base font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
+              >
+                {/* Mirror shine sweep reflection */}
+                <div className="animate-shine-sweep" />
+                <ClipboardList size={20} className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 text-emerald-600 relative z-10" />
+                <span className="relative z-10">Leaves & Availability</span>
+              </NavLink>
+            </div>
+
+            {/* ================= BEAUTIFUL BOTANICAL ARTWORK IN EMPTY SPACE ================= */}
+            <div className="hidden md:flex flex-col items-center justify-center py-6 px-4 mt-8 opacity-90 transition-opacity duration-300">
+              <svg viewBox="0 0 200 130" className="w-44 h-28 text-emerald-600/18 hover:text-emerald-500/30 transition-colors duration-500 pointer-events-none select-none">
+                {/* Zen Balanced Stones Stack */}
+                <ellipse cx="100" cy="105" rx="42" ry="12" fill="currentColor" />
+                <ellipse cx="100" cy="85" rx="34" ry="10" fill="currentColor" opacity="0.9" />
+                <ellipse cx="100" cy="68" rx="26" ry="8" fill="currentColor" opacity="0.95" />
+                <ellipse cx="100" cy="53" rx="18" ry="6" fill="currentColor" />
+                <ellipse cx="100" cy="41" rx="11" ry="4" fill="currentColor" opacity="0.85" />
+                
+                {/* Glowing Lotus Bloom on Top */}
+                <path d="M100,16 C96,24 94,32 100,37 C106,32 104,24 100,16 Z" fill="#10b981" opacity="0.55" className="animate-pulse" />
+                <path d="M100,22 C92,25 86,30 93,37 C100,37 99,28 100,22 Z" fill="#34d399" opacity="0.4" />
+                <path d="M100,22 C108,25 114,30 107,37 C100,37 101,28 100,22 Z" fill="#34d399" opacity="0.4" />
+
+                {/* Sparkle highlights */}
+                <circle cx="50" cy="45" r="1.5" fill="#fbbf24" className="animate-pulse" />
+                <circle cx="150" cy="65" r="2" fill="#fbbf24" className="animate-pulse" />
+                <circle cx="135" cy="30" r="1.5" fill="#fbbf24" />
+                <circle cx="65" cy="85" r="1" fill="#fbbf24" />
+              </svg>
+              <span className="text-[10px] text-emerald-800/40 font-black tracking-[0.2em] uppercase mt-2 select-none">
+                Zen Harmony
+              </span>
+            </div>
+          </>
         )}
 
         {activeUser.role === 'Old Person' && (
